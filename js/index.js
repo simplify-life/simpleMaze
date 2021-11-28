@@ -306,22 +306,50 @@ function startSearch(){
 
 function drawPath(node){
     let from = node.idx
+    let arr = [from]
     while(map[from].father!=null){
-        let to = map[from].father.idx
-        console.log("from",from,"to",to)
-        let start = {
-            x:from%matrixN*cellW+cellW/2,
-            y:Math.floor(from/matrixN)*cellH+cellH/2
-        }
-        let end = {
-            x:to%matrixN*cellW+cellW/2,
-            y:Math.floor(to/matrixN)*cellH+cellH/2
-        }
-        ctx.beginPath()
-        ctx.moveTo(start.x,start.y)
-        ctx.lineTo(end.x,end.y)
-        ctx.strokeStyle="rgb(0,0,160)"
-        ctx.stroke()
-        from = to
+        from = map[from].father.idx
+        arr.push(from)
     }
+    let i = arr.length
+    // while(i--){
+    //     from = arr[i]
+    //     let to = arr[i-1]
+    //     let start = {
+    //         x:from%matrixN*cellW+cellW/2,
+    //         y:Math.floor(from/matrixN)*cellH+cellH/2
+    //     }
+    //     let end = {
+    //         x:to%matrixN*cellW+cellW/2,
+    //         y:Math.floor(to/matrixN)*cellH+cellH/2
+    //     }
+    //     ctx.beginPath()
+    //     ctx.moveTo(start.x,start.y)
+    //     ctx.lineTo(end.x,end.y)
+    //     ctx.strokeStyle="rgb(0,0,160)"
+    //     ctx.stroke()
+    //     if(i==1) break
+    // }
+    let int = setInterval(()=>{
+        if(i>0){
+            from = arr[i]
+            let to = arr[i-1]
+            let start = {
+                x:from%matrixN*cellW+cellW/2,
+                y:Math.floor(from/matrixN)*cellH+cellH/2
+            }
+            let end = {
+                x:to%matrixN*cellW+cellW/2,
+                y:Math.floor(to/matrixN)*cellH+cellH/2
+            }
+            ctx.beginPath()
+            ctx.moveTo(start.x,start.y)
+            ctx.lineTo(end.x,end.y)
+            ctx.strokeStyle="rgb(0,0,160)"
+            ctx.stroke()
+            i--
+        }else{
+            clearInterval(int)
+        }
+    },100)
 }
