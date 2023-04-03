@@ -1,19 +1,46 @@
 <DOCTYPE html>
-<html>
+    <html>
+
     <head>
         <meta charset="UTF-8">
         <title>迷宫生成器</title>
         <style>
-            #canvas{
-                border:0px solid black
+            #canvas {
+                border: 0px solid black;
+            }
+
+            body {
+                background-color: #f2f2f2;
+            }
+
+            button {
+                background-color: #4CAF50;
+                /* Green */
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 10px;
+                /* Add margin here */
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #3e8e41;
             }
         </style>
+ 
     </head>
+
     <body>
         <canvas id="canvas" width="300" height="300"></canvas>
         <button onclick="generateMazy()">点击生成迷宫</button>
         <button onclick="clearAll()">清除</button>
         <button onclick="startSearch()">寻路</button>
     </body>
-    <script src = "js/index.js"></script>
-</html>
+    <script src="js/index.js"></script>
+
+    </html>
