@@ -359,3 +359,61 @@ function drawPath(node) {
     requestAnimationFrame(animate)
 }
 
+// function drawCharacter(x, y) {
+//   let size = 20
+//   ctx.fillStyle = "rgb(160,0,0)"
+//   ctx.fillRect(x - size / 2, y - size / 2, size, size)
+// }
+
+// let characterX = cellW / 2
+// let characterY = cellH / 2
+
+// function moveCharacter(direction) {
+//   switch (direction) {
+//     case "up":
+//       if (characterY - cellH >= 0) {
+//         characterY -= cellH
+//       }
+//       break
+//     case "down":
+//       if (characterY + cellH < h) {
+//         characterY += cellH
+//       }
+//       break
+//     case "left":
+//       if (characterX - cellW >= 0) {
+//         characterX -= cellW
+//       }
+//       break
+//     case "right":
+//       if (characterX + cellW < w) {
+//         characterX += cellW
+//       }
+//       break
+//     default:
+//       break
+//   }
+//   generateMazy()
+//   drawCharacter(characterX, characterY)
+// }
+
+// document.addEventListener("keydown", (event) => {
+//   switch (event.key) {
+//     case "ArrowUp":
+//       moveCharacter("up")
+//       break
+//     case "ArrowDown":
+//       moveCharacter("down")
+//       break
+//     case "ArrowLeft":
+//       moveCharacter("left")
+//       break
+//     case "ArrowRight":
+//       moveCharacter("right")
+//       break
+//     default:
+//       break
+//   }
+// })
+
+
