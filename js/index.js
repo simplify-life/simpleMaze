@@ -8,6 +8,9 @@ var w = canvas.clientWidth
 var h = canvas.clientHeight
 var cellW = w / matrixN, cellH = h / matrixN
 
+let characterX = cellW / 2
+let characterY = cellH / 2
+
 function generateMazy(matrixN = 20) {
     clearAll()
     generateMatrix(matrixN)
@@ -35,6 +38,7 @@ function initUI() {
     // }
     connectedCell(0, 0)
     connectedCell(matrixN * matrixN - 1, 1)
+    drawCharacter(cellW >> 1, cellH >> 1)
 }
 
 var map = []
@@ -124,13 +128,13 @@ function startPrim() {
     }
     let idx = 0;
     function animate() {
-      if (isNotEnd()) {
-        idx = connectedCellRandom();
-        requestAnimationFrame(animate);
-      } else {
-        console.log("------------------", cellAll[idx].length);
-        console.log(map);
-      }
+        if (isNotEnd()) {
+            idx = connectedCellRandom();
+            requestAnimationFrame(animate);
+        } else {
+            console.log("------------------", cellAll[idx].length);
+            console.log(map);
+        }
     }
     requestAnimationFrame(animate);
 
@@ -309,12 +313,6 @@ function drawPath(node) {
     }
     let i = arr.length
 
-    function drawSquare(point) {
-        let size = 10
-        ctx.fillStyle = "rgb(0,0,160)"
-        ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size)
-      }
-
     function animate() {
         if (i > 0) {
             from = arr[i]
@@ -327,31 +325,14 @@ function drawPath(node) {
                 x: to % matrixN * cellW + cellW / 2,
                 y: Math.floor(to / matrixN) * cellH + cellH / 2
             }
+
+            moveCharacter(start, end)
             ctx.beginPath()
             ctx.moveTo(start.x, start.y)
             ctx.lineTo(end.x, end.y)
             ctx.strokeStyle = "rgb(0,0,160)"
             ctx.stroke()
             i--
-            // let dx = end.x - start.x
-            // let dy = end.y - start.y
-            // let distance = Math.sqrt(dx * dx + dy * dy)
-            // let speed = 2
-            // let progress = 0
-            // let animateSquare = () => {
-            //     ctx.clearRect(0, 0, canvas.width, canvas.height)
-            //     let x = start.x + dx * progress / distance
-            //     let y = start.y + dy * progress / distance
-            //     drawSquare({ x, y })
-            //     progress += speed
-            //     if (progress <= distance) {
-            //       requestAnimationFrame(animateSquare)
-            //     } else {
-            //       i--
-            //       requestAnimationFrame(animate)
-            //     }
-            //   }
-            //   animateSquare()
             requestAnimationFrame(animate)
         }
     }
@@ -359,61 +340,48 @@ function drawPath(node) {
     requestAnimationFrame(animate)
 }
 
-// function drawCharacter(x, y) {
-//   let size = 20
-//   ctx.fillStyle = "rgb(160,0,0)"
-//   ctx.fillRect(x - size / 2, y - size / 2, size, size)
-// }
+function drawCharacter(x, y) {
+    characterX = x
+    characterY = y
+    let size = 5
+    ctx.fillStyle = "rgb(160,0,0)"
+    ctx.fillRect(x - size / 2, y - size / 2, size, size)
+}
 
-// let characterX = cellW / 2
-// let characterY = cellH / 2
+function clearCharacter() {
+    let x = characterX
+    let y = characterY
+    let size = 5
+    ctx.clearRect(x - size / 2, y - size / 2, size, size)
+}
 
-// function moveCharacter(direction) {
-//   switch (direction) {
-//     case "up":
-//       if (characterY - cellH >= 0) {
-//         characterY -= cellH
-//       }
-//       break
-//     case "down":
-//       if (characterY + cellH < h) {
-//         characterY += cellH
-//       }
-//       break
-//     case "left":
-//       if (characterX - cellW >= 0) {
-//         characterX -= cellW
-//       }
-//       break
-//     case "right":
-//       if (characterX + cellW < w) {
-//         characterX += cellW
-//       }
-//       break
-//     default:
-//       break
-//   }
-//   generateMazy()
-//   drawCharacter(characterX, characterY)
-// }
 
-// document.addEventListener("keydown", (event) => {
-//   switch (event.key) {
-//     case "ArrowUp":
-//       moveCharacter("up")
-//       break
-//     case "ArrowDown":
-//       moveCharacter("down")
-//       break
-//     case "ArrowLeft":
-//       moveCharacter("left")
-//       break
-//     case "ArrowRight":
-//       moveCharacter("right")
-//       break
-//     default:
-//       break
-//   }
-// })
 
+function moveCharacter(from, to) {
+    let size = 5
+    let startX = from.x
+    let startY = from.y
+    let endX = to.x
+    let endY = to.y
+    let dx = endX - startX
+    let dy = endY - startY
+    let distance = Math.sqrt(dx * dx + dy * dy)
+    let speed = 2
+    let duration = distance / speed
+    let startTime = null
+
+    function animate(timestamp) {
+        if (!startTime) startTime = timestamp
+        let progress = (timestamp - startTime) / duration
+        if (progress > 1) progress = 1
+        let x = startX + dx * progress
+        let y = startY + dy * progress
+        clearCharacter()
+        drawCharacter(x, y)
+        if (progress < 1) {
+            requestAnimationFrame(animate)
+        }
+    }
+    requestAnimationFrame(animate)
+}
 
